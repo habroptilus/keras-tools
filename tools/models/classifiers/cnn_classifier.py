@@ -1,7 +1,7 @@
 
 from keras.layers import Input, Dense, Conv2D, Dropout, Flatten, MaxPooling2D
 from keras.models import Model
-from tools.models import KerasClassifierInterface
+from .classifier_interface import KerasClassifierInterface
 
 
 class CNNClassifier(KerasClassifierInterface):

@@ -1,6 +1,7 @@
 """MLP for Classification."""
 from keras.layers import Input, Dense
-from keras.models import Model, KerasClassifierInterface
+from keras.models import Model
+from .classifier_interface import KerasClassifierInterface
 
 
 class MLPClassifier(KerasClassifierInterface):
