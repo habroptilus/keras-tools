@@ -38,5 +38,4 @@ class CNNClassifier(KerasClassifierInterface):
         return model
 
     def model_flag(self):
-        return f"cnnc_{self.input_height}_{self.input_width}_{self.input_channels}_{self.filters}_"
-        f"{self.pool_size}_{self.med_dim}_{self.output_dim}_{self.dropout_rate1}_{self.dropout_rate2}_{self.activation}"
+        return f"cnnc_{self.input_height}_{self.input_width}_{self.input_channels}_{self.filters}_{self.pool_size}_{self.med_dim}_{self.output_dim}_{self.dropout_rate1}_{self.dropout_rate2}_{self.activation}"
