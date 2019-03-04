@@ -17,7 +17,7 @@ class KerasNetInterface:
         model_path = result_dir / f"{self.create_flag()}/model_{trained_epochs:02d}.h5"
         history_path = result_dir / f"{self.create_flag()}/history_{trained_epochs:02d}.json"
 
-        model_path.parent.mkdir(exist_ok=True)
+        model_path.parent.mkdir(exist_ok=True, parents=True)
         if model_path.exists() and history_path.exists():
             self.trained_epochs = trained_epochs
             lg.info("Loading the trained model...")
