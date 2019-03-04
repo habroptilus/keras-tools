@@ -7,6 +7,7 @@ import json
 
 class KerasNetInterface:
     original_layers: Dict = {}
+    metrics = []
 
     def __init__(self, trained_epochs, result_dir, batch_size, valid_rate, loss, optimizer):
         self.result_dir = result_dir
