@@ -83,7 +83,10 @@ class KerasNetInterface:
     def evaluate(self, X, y):
         scores = self.model.evaluate(X, y)
         metrics_names = self.model.metrics_names
-        return {metrics_names[i]: scores[i] for i in range(len(scores))}
+        if len(metrics_names) == 1:
+            return {metrics_names[0]: scores}
+        else:
+            return {metrics_names[i]: scores[i] for i in range(len(scores))}
 
     def create_flag(self):
         base_flag = f"{self.batch_size}_{self.valid_rate}_{self.loss}_{self.optimizer}"
