@@ -88,7 +88,7 @@ class KerasNetInterface:
         base_flag = f"{self.batch_size}_{self.valid_rate}_{self.loss}_{self.optimizer}"
         return f"{self.model_flag()}_{base_flag}"
 
-    def plot(self):
+    def plot(self, history):
         pass
 
     def predict(self):
