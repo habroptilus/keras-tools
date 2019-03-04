@@ -7,6 +7,6 @@ class KerasRegressorInterface(KerasNetInterface):
     def predict(self, X):
         return self.model.predict(X)
 
-     def plot(self, history):
+    def plot(self, history):s
         plot_history_regression(history)
 
