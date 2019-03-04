@@ -1,5 +1,5 @@
 """Keras Model Interface for classification."""
-from .base import KerasNetInterface
+from tools.models.base import KerasNetInterface
 from tools.plot import plot_history_classificaion
 import numpy as np
 
