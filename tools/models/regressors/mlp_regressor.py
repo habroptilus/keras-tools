@@ -5,7 +5,7 @@ from .regressor_interface import KerasRegressorInterface
 
 class MLPRegressor(KerasRegressorInterface):
 
-    def __init__(self, result_dir, input_dim, trained_epochs=0, valid_rate=0.3, batch_size=32,
+    def __init__(self, result_dir, input_dim, trained_epochs=0, batch_size=1, valid_rate=None,
                  med1_dim=300, med2_dim=100, activation="relu",
                  loss='mean_squared_error', optimizer='adam'):
 
@@ -13,7 +13,8 @@ class MLPRegressor(KerasRegressorInterface):
         self.med1_dim = med1_dim
         self.med2_dim = med2_dim
         self.activation = activation
-        super().__init__(trained_epochs, result_dir, batch_size, valid_rate, loss, optimizer)
+        super().__init__(trained_epochs, result_dir,
+                         batch_size, valid_rate, loss, optimizer)
 
     def construct(self):
         inputs = Input(shape=(self.input_dim,))
@@ -21,7 +22,8 @@ class MLPRegressor(KerasRegressorInterface):
         x = Dense(self.med2_dim, activation=self.activation)(x)
         predictions = Dense(1)(x)
         model = Model(inputs=inputs, outputs=predictions)
-        model.compile(optimizer=self.optimizer, loss=self.loss, metrics=self.metrics)
+        model.compile(optimizer=self.optimizer,
+                      loss=self.loss, metrics=self.metrics)
         return model
 
     def model_flag(self):

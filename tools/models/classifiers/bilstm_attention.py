@@ -9,8 +9,8 @@ class BiLSTM_Attention(KerasClassifierInterface):
     """BiLSTMとAttentionを使ったKerasのModel class."""
     original_layers = {'Attention': Attention}
 
-    def __init__(self, input_dim, seq_len, result_dir, batch_size, embedded_dim=200, dropout_rate=0.3, lstm_out=512,
-                 trained_epochs=0, valid_rate=0.3, loss="categorical_crossentropy", optimizer="adam"):
+    def __init__(self, input_dim, seq_len, result_dir, batch_size=1, valid_rate=None, embedded_dim=200, dropout_rate=0.3, lstm_out=512,
+                 trained_epochs=0, loss="categorical_crossentropy", optimizer="adam"):
         self.input_dim = input_dim
         self.seq_len = seq_len
         self.dropout_rate = dropout_rate

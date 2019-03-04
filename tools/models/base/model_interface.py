@@ -15,8 +15,10 @@ class KerasNetInterface:
         self.valid_rate = valid_rate
         self.loss = loss
         self.optimizer = optimizer
-        model_path = result_dir / f"{self.create_flag()}/model_{trained_epochs:02d}.h5"
-        history_path = result_dir / f"{self.create_flag()}/history_{trained_epochs:02d}.json"
+        model_path = result_dir / \
+            f"{self.create_flag()}/model_{trained_epochs:02d}.h5"
+        history_path = result_dir / \
+            f"{self.create_flag()}/history_{trained_epochs:02d}.json"
 
         model_path.parent.mkdir(exist_ok=True, parents=True)
         if model_path.exists() and history_path.exists():
@@ -41,27 +43,31 @@ class KerasNetInterface:
             history = json.load(f)
         return history
 
-    def fit(self, X, y, epochs):
+    def fit(self, X_train, y_train, epochs, X_valid=None, y_valid=None):
         if self.trained_epochs >= epochs:
-            lg.info(f"This model has already been traiend up to {self.trained_epochs} epochs")
+            lg.info(
+                f"This model has already been traiend up to {self.trained_epochs} epochs")
             return
         callbacks = self.create_callbacks()
-        self.model.fit(X, y, initial_epoch=self.trained_epochs, epochs=epochs,
-                       batch_size=self.batch_size, callbacks=callbacks, validation_split=self.valid_rate)
+        self.model.fit(X_train, y_train, initial_epoch=self.trained_epochs, epochs=epochs,
+                       batch_size=self.batch_size, callbacks=callbacks, validation_data=(X_valid, y_valid), validation_split=self.valid_rate)
         return self.history
 
     def save_model(self, save_path):
         self.model.save(str(save_path))
 
     def create_callbacks(self):
-        model_path = self.result_dir / (self.create_flag()+"/model_{epoch:02d}.h5")
+        model_path = self.result_dir / \
+            (self.create_flag() + "/model_{epoch:02d}.h5")
         mcp = ModelCheckpoint(str(model_path))
-        hcp = LambdaCallback(on_epoch_end=lambda epoch, logs: self.save_history(epoch, logs))
+        hcp = LambdaCallback(on_epoch_end=lambda epoch,
+                             logs: self.save_history(epoch, logs))
         return [mcp, hcp]
 
     def save_history(self, epoch, logs):
         epoch += 1
-        history_path = self.result_dir / f"{self.create_flag()}/history_{epoch:02d}.json"
+        history_path = self.result_dir / \
+            f"{self.create_flag()}/history_{epoch:02d}.json"
         if len(self.history) == 0:
             self.history = {k: [v] for k, v in logs.items()}
         else:
@@ -72,7 +78,8 @@ class KerasNetInterface:
         self.trained_epochs = epoch
 
     def plot_history(self, epoch):
-        history_path = self.result_dir / self.create_flag() / f"history_{epoch:02d}.json"
+        history_path = self.result_dir / \
+            self.create_flag() / f"history_{epoch:02d}.json"
         if history_path.exists():
             with history_path.open("r") as f:
                 history = json.load(f)
