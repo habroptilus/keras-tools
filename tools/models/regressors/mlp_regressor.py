@@ -13,8 +13,7 @@ class MLPRegressor(KerasRegressorInterface):
         self.med1_dim = med1_dim
         self.med2_dim = med2_dim
         self.activation = activation
-        super().__init__(trained_epochs, result_dir,
-                         batch_size, valid_rate, loss, optimizer)
+        super().__init__(trained_epochs, result_dir, loss, optimizer)
 
     def construct(self):
         inputs = Input(shape=(self.input_dim,))
