@@ -16,9 +16,7 @@ class BiLSTM_Attention(KerasClassifierInterface):
         self.dropout_rate = dropout_rate
         self.lstm_out = lstm_out
         self.embedded_dim = embedded_dim
-        self.loss = loss
-        self.optimizer = optimizer
-        super().__init__(trained_epochs, result_dir, batch_size, valid_rate)
+        super().__init__(trained_epochs, result_dir, loss, optimizer)
 
     def construct(self):
         inputs = Input(shape=(self.seq_len,), dtype='int32')

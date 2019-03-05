@@ -22,8 +22,7 @@ class CNNClassifier(KerasClassifierInterface):
         self.dropout_rate1 = dropout_rate1
         self.dropout_rate2 = dropout_rate2
         self.activation = activation
-        super().__init__(trained_epochs, result_dir,
-                         batch_size, valid_rate, loss, optimizer)
+        super().__init__(trained_epochs, result_dir, loss, optimizer)
 
     def construct(self):
         inputs = Input(
