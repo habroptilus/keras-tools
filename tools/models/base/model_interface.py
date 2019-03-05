@@ -60,6 +60,7 @@ class KerasNetInterface:
         v_steps = len(valid_generator) if valid_generator is not None else None
         self.model.fit_generator(generator, epochs=epochs, steps_per_epoch=len(generator), initial_epoch=self.trained_epochs,
                                  validation_data=valid_generator, validation_steps=v_steps, callbacks=callbacks)
+        return self.history
 
     def save_model(self, save_path):
         self.model.save(str(save_path))
@@ -103,6 +104,14 @@ class KerasNetInterface:
         else:
             return {metrics_names[i]: scores[i] for i in range(len(scores))}
 
+    def evaluate_generator(self, generator):
+        scores = self.model.evaluate_generator(generator)
+        metrics_names = self.model.metrics_names
+        if len(metrics_names) == 1:
+            return {metrics_names[0]: scores}
+        else:
+            return {metrics_names[i]: scores[i] for i in range(len(scores))}
+
     def create_flag(self):
         pass
 
@@ -110,6 +119,9 @@ class KerasNetInterface:
         pass
 
     def predict(self):
+        pass
+
+    def predict_generator(self):
         pass
 
     def construct(self):
