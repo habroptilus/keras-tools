@@ -9,10 +9,8 @@ class KerasNetInterface:
     original_layers: Dict = {}
     metrics = []
 
-    def __init__(self, trained_epochs, result_dir, batch_size, valid_rate, loss, optimizer):
+    def __init__(self, trained_epochs, result_dir, loss, optimizer):
         self.result_dir = result_dir
-        self.batch_size = batch_size
-        self.valid_rate = valid_rate
         self.loss = loss
         self.optimizer = optimizer
         model_path = result_dir / \
@@ -43,15 +41,25 @@ class KerasNetInterface:
             history = json.load(f)
         return history
 
-    def fit(self, X_train, y_train, epochs, X_valid=None, y_valid=None):
+    def fit(self, X_train, y_train, epochs, batch_size=1, valid_rate=None, X_valid=None, y_valid=None):
         if self.trained_epochs >= epochs:
             lg.info(
                 f"This model has already been traiend up to {self.trained_epochs} epochs")
             return
         callbacks = self.create_callbacks()
         self.model.fit(X_train, y_train, initial_epoch=self.trained_epochs, epochs=epochs,
-                       batch_size=self.batch_size, callbacks=callbacks, validation_data=(X_valid, y_valid), validation_split=self.valid_rate)
+                       batch_size=batch_size, callbacks=callbacks, validation_data=(X_valid, y_valid), validation_split=valid_rate)
         return self.history
+
+    def fit_generator(self, generator, epochs, valid_generator=None):
+        if self.trained_epochs >= epochs:
+            lg.info(
+                f"This model has already been traiend up to {self.trained_epochs} epochs")
+            return
+        callbacks = self.create_callbacks()
+        v_steps = len(valid_generator) if valid_generator is not None else None
+        self.model.fit_generator(generator, epochs=epochs, steps_per_epoch=len(generator), initial_epoch=self.trained_epochs,
+                                 validation_data=valid_generator, validation_steps=v_steps, callbacks=callbacks)
 
     def save_model(self, save_path):
         self.model.save(str(save_path))
@@ -96,8 +104,7 @@ class KerasNetInterface:
             return {metrics_names[i]: scores[i] for i in range(len(scores))}
 
     def create_flag(self):
-        base_flag = f"{self.batch_size}_{self.valid_rate}_{self.loss}_{self.optimizer}"
-        return f"{self.model_flag()}_{base_flag}"
+        pass
 
     def plot(self, history):
         pass
@@ -106,7 +113,4 @@ class KerasNetInterface:
         pass
 
     def construct(self):
-        pass
-
-    def model_flag(self):
         pass

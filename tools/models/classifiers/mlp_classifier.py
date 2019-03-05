@@ -28,5 +28,5 @@ class MLPClassifier(KerasClassifierInterface):
                       loss=self.loss, metrics=self.metrics)
         return model
 
-    def model_flag(self):
+    def create_flag(self):
         return f"mlpc_{self.input_dim}_{self.med1_dim}_{self.med2_dim}_{self.output_dim}_{self.activation}"

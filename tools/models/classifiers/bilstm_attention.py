@@ -40,5 +40,5 @@ class BiLSTM_Attention(KerasClassifierInterface):
                                                      attention_output.shape[-1])
         return attention_vectors
 
-    def model_flag(self):
+    def create_flag(self):
         return f"bla_{self.input_dim}_{self.seq_len}_{self.dropout_rate}_{self.lstm_out}_{self.embedded_dim}_{self.loss}_{self.optimizer}"
