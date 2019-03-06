@@ -27,7 +27,8 @@ class BiLSTM_Attention(KerasClassifierInterface):
         encoded = Attention(name="attention")(x)
         preds = Dense(2, activation='softmax')(encoded)
         model = Model(inputs=inputs, outputs=preds)
-        model.compile(optimizer=Adam(), loss=self.loss, metrics=["accuracy"])
+        model.compile(optimizer=self.optimizer,
+                      loss=self.loss, metrics=["accuracy"])
         return model
 
     def get_attention_vectors(self, X):

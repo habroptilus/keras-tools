@@ -5,7 +5,7 @@ from .regressor_interface import KerasRegressorInterface
 
 class MLPRegressor(KerasRegressorInterface):
 
-    def __init__(self, result_dir, input_dim, trained_epochs=0, batch_size=1, valid_rate=None,
+    def __init__(self, result_dir, input_dim, trained_epochs=0,
                  med1_dim=300, med2_dim=100, activation="relu",
                  loss='mean_squared_error', optimizer='adam'):
 
