@@ -52,14 +52,14 @@ class KerasNetInterface:
         return self.history
 
     def fit_generator(self, generator, epochs, valid_generator=None):
+        """generatorはSequenceクラスを継承したものに限る."""
         if self.trained_epochs >= epochs:
             lg.info(
                 f"This model has already been traiend up to {self.trained_epochs} epochs")
             return
         callbacks = self.create_callbacks()
-        v_steps = len(valid_generator) if valid_generator is not None else None
-        self.model.fit_generator(generator, epochs=epochs, steps_per_epoch=len(generator), initial_epoch=self.trained_epochs,
-                                 validation_data=valid_generator, validation_steps=v_steps, callbacks=callbacks)
+        self.model.fit_generator(generator, epochs=epochs, initial_epoch=self.trained_epochs,
+                                 validation_data=valid_generator, callbacks=callbacks)
         return self.history
 
     def save_model(self, save_path):
