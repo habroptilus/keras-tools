@@ -86,7 +86,12 @@ class KerasNetInterface:
             json.dump(self.history, f)
         self.trained_epochs = epoch
 
-    def plot_history(self, epoch):
+    def plot_history(self, epoch=None):
+        """modelの学習曲線を描画する.
+
+        :param epoch: 指定したepochまでの学習曲線を描画.指定しない場合はmodelのtrained_epochまでを描画.
+        """
+        epoch = self.trained_epochs if epoch is None else epoch
         history_path = self.result_dir / \
             self.create_flag() / f"history_{epoch:02d}.json"
         if history_path.exists():
