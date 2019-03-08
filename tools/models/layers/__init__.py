@@ -1,3 +1,4 @@
-from .attention import Attention
+from .my_attention import MyAttention
+from .transformer import TransformerBasedEncoder, SelfAttention
 
-__all__ = ["Attention"]
+__all__ = ["MyAttention", "TransformerBasedEncoder", "SelfAttention"]
