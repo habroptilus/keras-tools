@@ -1,20 +1,20 @@
 from keras.engine.topology import Layer
 import keras.backend as K
-from keras import initializers
 
 
-class MyAttention(Layer):
+class Attention(Layer):
     """自作のattention layer."""
 
     def __init__(self, **kwargs):
-        self.init = initializers.get('normal')
-        super(MyAttention, self).__init__(**kwargs)
+        super(Attention, self).__init__(**kwargs)
 
     def build(self, input_shape):
         assert len(input_shape) == 3
-        self.W = K.variable(self.init((input_shape[-1], 1)))
-        self.trainable_weights = [self.W]
-        super(MyAttention, self).build(input_shape)
+        self.W = self.add_weight(name='W',
+                                 shape=(input_shape[-1], 1),
+                                 initializer='normal',
+                                 trainable=True)
+        super(Attention, self).build(input_shape)
 
     def call(self, x, mask=None):
         eij = K.tanh(K.dot(x, self.W))

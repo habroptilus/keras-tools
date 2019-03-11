@@ -1,6 +1,5 @@
 from keras.layers import Layer, Dropout, Dense
 import keras.backend as K
-from keras import initializers
 from keras.initializers import Zeros, Ones
 import math
 
@@ -123,7 +122,6 @@ class FeedForwardNetwork(Layer):
     '''
 
     def __init__(self, dropout_rate, **kwargs):
-        self.init = initializers.get('normal')
         self.dropout_rate = dropout_rate
         super(FeedForwardNetwork, self).__init__(**kwargs)
 
@@ -163,7 +161,6 @@ class SelfAttention(Layer):
     """Multi head, scaled dot production,dropoutを含めたSelf Attetion layer."""
 
     def __init__(self, head_num, dropout_rate, **kwargs):
-        self.init = initializers.get('normal')
         self.dropout_rate = dropout_rate
         self.head_num = head_num
         super(SelfAttention, self).__init__(**kwargs)
@@ -261,7 +258,6 @@ class AddPositionalEncoding(Layer):
     """Positional encoding を追加するレイヤー"""
 
     def __init__(self, **kwargs):
-        self.init = initializers.get('normal')
         super(AddPositionalEncoding, self).__init__(**kwargs)
 
     def build(self, input_shape):
@@ -302,18 +298,20 @@ class SingleHeadSelfAttention(Layer):
     """single head self attention layer (scaled dot production,dropout含む)"""
 
     def __init__(self, dropout_rate, **kwargs):
-        self.init = initializers.get('normal')
         self.dropout_rate = dropout_rate
         super(SingleHeadSelfAttention, self).__init__(**kwargs)
 
     def build(self, input_shape):
         assert len(input_shape) == 3
         self.depth = input_shape[-1]
-        self.W_q = K.variable(self.init((self.depth, self.depth)))
-        self.W_k = K.variable(self.init((self.depth, self.depth)))
-        self.W_v = K.variable(self.init((self.depth, self.depth)))
-        self.W_o = K.variable(self.init((self.depth, self.depth)))
-        self.trainable_weights = [self.W_q, self.W_k, self.W_v, self.W_o]
+        self.W_q = self.add_weight(name='W_q', shape=(
+            self.depth, self.depth), initializer='normal', trainable=True)
+        self.W_k = self.add_weight(name='W_k', shape=(
+            self.depth, self.depth), initializer='normal', trainable=True)
+        self.W_v = self.add_weight(name='W_v', shape=(
+            self.depth, self.depth), initializer='normal', trainable=True)
+        self.W_o = self.add_weight(name='W_o', shape=(
+            self.depth, self.depth), initializer='normal', trainable=True)
         super(SingleHeadSelfAttention, self).build(input_shape)
 
     def call(self, x, mask=None):
