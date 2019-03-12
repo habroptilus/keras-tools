@@ -49,7 +49,6 @@ class KerasNetInterface:
         callbacks = self.create_callbacks()
         self.model.fit(X_train, y_train, initial_epoch=self.trained_epochs, epochs=epochs,
                        batch_size=batch_size, callbacks=callbacks, validation_data=validation_data, validation_split=valid_rate)
-        return self.history
 
     def fit_generator(self, generator, epochs, valid_generator=None):
         """generatorはSequenceクラスを継承したものに限る."""
