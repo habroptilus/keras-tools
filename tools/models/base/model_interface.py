@@ -41,14 +41,14 @@ class KerasNetInterface:
             history = json.load(f)
         return history
 
-    def fit(self, X_train, y_train, epochs, batch_size=1, X_valid=None, y_valid=None, valid_rate=None):
+    def fit(self, X_train, y_train, epochs, batch_size=1, validation_data=None, valid_rate=None):
         if self.trained_epochs >= epochs:
             lg.info(
                 f"This model has already been traiend up to {self.trained_epochs} epochs")
             return
         callbacks = self.create_callbacks()
         self.model.fit(X_train, y_train, initial_epoch=self.trained_epochs, epochs=epochs,
-                       batch_size=batch_size, callbacks=callbacks, validation_data=(X_valid, y_valid), validation_split=valid_rate)
+                       batch_size=batch_size, callbacks=callbacks, validation_data=validation_data, validation_split=valid_rate)
         return self.history
 
     def fit_generator(self, generator, epochs, valid_generator=None):
